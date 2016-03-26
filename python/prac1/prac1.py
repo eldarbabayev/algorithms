@@ -96,6 +96,7 @@ def count_split_inv(A, n):
 if __name__ == "__main__":
     sys.setrecursionlimit(1000000)
     data = load_data()
+    small = [1,6,3,2,4,5]
     print(sort_and_count(data, len(data)))
     
 

@@ -33,25 +33,25 @@ public class prac1 {
     List<List<Integer>> split(List<Integer> xs) {
 	List<List<Integer>> xss = new ArrayList<List<Integer>>();
 	
-	int n = xs.length();
+	int n = xs.size();
 	if (n == 1) {
-	    List<Integer> empty = new ArrayList<Integer>();
-	    xss = xss.add(xs);
-	    xss = xss.add(empty);
+	    List<Integer> empty = Collections.emptyList();
+	    xss.add(xs);
+	    xss.add(empty);
 	    return xss;
 	} else {
-	    int half = (int) Math.round(n/2);
-	    List<Integer> A = xs.sublist(0, half);
-	    List<Integer> B = xs.sublist(half, n);
-	    xss = xss.add(A);
-	    xss = xss.add(B);
+	    int half = (int) Math.round(n/2.0);
+	    List<Integer> A = xs.subList(0, half);
+	    List<Integer> B = xs.subList(half, n);
+	    xss.add(A);
+	    xss.add(B);
 	    return xss;
 	}
     }
 
     List<Integer> merge(List<Integer> B, List<Integer> C) {
-	int len_b = B.length();
-	int len_c = C.length();
+	int len_b = B.size();
+	int len_c = C.size();
 	List<Integer> D = new ArrayList<Integer>();
 
 	int i = 0;
@@ -76,15 +76,14 @@ public class prac1 {
 	return D;
     }
 
-    List<Integer> merge_count_inv(List<Integer> B, List<Integer> C) {
-	int len_b = B.length();
-	int len_c = C.length();
+    long merge_count_inv(List<Integer> B, List<Integer> C) {
+	int len_b = B.size();
+	int len_c = C.size();
 	List<Integer> D = new ArrayList<Integer>();
-
 	int i = 0;
 	int j = 0;
 
-	num_inv = 0;
+	int num_inv = 0;
 	for (int k = 0; k < (len_b + len_c); k++) {
 	    if (i == len_b) {
 		D.add(C.get(j));
@@ -101,16 +100,15 @@ public class prac1 {
 		i += 1;
 	    }
 	}
-
-	return D;
+	return num_inv;
     }
 
 
-    void sort(List<Integer> xs) {
-	if (xs.length() == 0) {
-	    List<Integer> empty = new ArrayList<Integer>();
+    List<Integer> sort(List<Integer> xs) {
+	if (xs.size() == 0) {
+	    List<Integer> empty = Collections.emptyList();
 	    return empty;
-	} else if (xs.length() == 1) {
+	} else if (xs.size() == 1) {
 	    return xs;
 	} else {
 	    List<List<Integer>> AB = split(xs);
@@ -118,29 +116,46 @@ public class prac1 {
 	}
     }
 
-    void sort_and_count(List<Integer> A, int n) {
+    long sort_and_count(List<Integer> A, int n) {
 	if (n == 1) {
 	    return 0;
 	} else {
 	    List<List<Integer>> BC = split(A);
-	    int X = sort_and_count(BC.get(0), BC.get(0).length());
-	    int Y = sort_and_count(BC.get(1), BC.get(0).length());
-	    int Z = count_split_inv(A, n);
+	    long X = sort_and_count(BC.get(0), BC.get(0).size());
+	    long Y = sort_and_count(BC.get(1), BC.get(0).size());
+	    long Z = count_split_inv(A, n);
 	    return X + Y + Z;
 	}
     }
 
-    int count_split_inv(List<Integer> A, int n) {
+    long count_split_inv(List<Integer> A, int n) {
 	List<List<Integer>> BC = split(A);
 	List<Integer> B_sorted = sort(BC.get(0));
 	List<Integer> C_sorted = sort(BC.get(1));
-	return merger_count_inv(B_sorted, C_sorted);
+	return merge_count_inv(B_sorted, C_sorted);
     }
 
     public static void main(String [] args) {
 	prac1 pr = new prac1();
 	List<Integer> ints = pr.load_data();
-	int ans = pr.sort_and_count(ints, ints.length());
+	List<Integer> small = new ArrayList<>();
+	small.add(9);
+	small.add(12);
+	small.add(3);
+	small.add(1);
+	small.add(6);
+	small.add(8);
+	small.add(2);
+	small.add(5);
+	small.add(14);
+	small.add(13);
+	small.add(11);
+	small.add(7);
+	small.add(10);
+	small.add(4);
+	small.add(0);
+	System.out.println(ints);
+	long ans = pr.sort_and_count(ints, ints.size());
 	System.out.println(ans);
     }
 }
